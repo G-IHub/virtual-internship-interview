@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Internship Interview</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      padding: 40px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 80px;
+    }
+
+    .left {
+      flex: 1;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #eee;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+
+    .header {
+      font-size: clamp(32px, 5vw, 64px);
+      font-weight: bold;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .header span {
+      color: #7E22CE;
+    }
+
+    .note {
+      font-size: clamp(14px, 1.5vw, 20px);
+      color: #555;
+      margin-bottom: 30px;
+      max-width: 600px;
+    }
+
+    button {
+      padding: 16px 30px;
+      border: none;
+      background: #7E22CE;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: clamp(14px, 1.2vw, 18px);
+      display: none;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #5b18a8;
+    }
+
+    .right {
+      flex: 1;
+    }
+
+    .video-card {
+      border-radius: 24px;
+      padding: 10px;
+      background: linear-gradient(135deg, #7E22CE, #22c55e);
+      width: 100%;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 18px;
+      display: block;
+      height: auto;
+      min-height: 300px;
+      max-height: 500px;
+      object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        height: auto;
+        padding: 20px 0;
+      }
+
+      .container {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+        gap: 40px;
+      }
+
+      .left {
+        width: 100%;
+      }
+
+      .right {
+        width: 100%;
+      }
+
+      .header {
+        font-size: 32px;
+      }
+
+      .note {
+        font-size: 15px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="left">
+      <div class="badge">INTERNATIONAL INTERNSHIP INTERVIEW PROCESS</div>
+
+      <div class="header">
+        Watch the <span>orientation video</span><br>
+        to continue your application
+      </div>
+
+      <p class="note">
+        You are required to watch this video till the end to unlock the next step in the interview process.
+      </p>
+
+      <button id="nextBtn">Continue →</button>
+    </div>
+
+    <div class="right">
+      <div class="video-card">
+        <video id="video" controls>
+          <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const video = document.getElementById("video");
+    const nextBtn = document.getElementById("nextBtn");
+
+    let watchedTime = 0;
+
+    video.addEventListener("timeupdate", () => {
+      if (!video.seeking) {
+        watchedTime = video.currentTime;
+      }
+    });
+
+    video.addEventListener("seeking", () => {
+      if (video.currentTime > watchedTime) {
+        video.currentTime = watchedTime;
+      }
+    });
+
+    video.addEventListener("ended", () => {
+      nextBtn.style.display = "inline-block";
+    });
+
+    nextBtn.addEventListener("click", () => {
+      window.location.href = "form.html";
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Registrations</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f2f4f7;
+      margin: 0;
+      padding: 20px;
+      color: #2f3a5a;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    header p {
+      margin: 8px 0 0 0;
+      color: #657392;
+    }
+
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .actions button,
+    .actions a {
+      padding: 10px 15px;
+      background: #5c6ac4;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .actions button:hover,
+    .actions a:hover {
+      background: #4f57b9;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      padding: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      min-width: 720px;
+    }
+
+    th, td {
+      border-bottom: 1px solid #e2e6eb;
+      text-align: left;
+      padding: 12px 10px;
+      vertical-align: top;
+      font-size: 16px;
+    }
+
+    th {
+      font-weight: 700;
+      color: #29385f;
+      background: #f7f9fc;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #536185;
+    }
+
+    .status {
+      font-size: 13px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: #eaf4ff;
+      color: #2b65d9;
+      display: inline-block;
+      font-weight: 700;
+    }
+
+    .error {
+      border-radius: 12px;
+      background: #fff0f0;
+      color: #9b2c2c;
+      border: 1px solid #ffc9c9;
+      padding: 12px 14px;
+      margin-top: 12px;
+    }
+
+    .loading {
+      margin-top: 12px;
+      color: #475577;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Admin Dashboard</h1>
+      <p>View internship application registrations from Supabase.</p>
+      <div class="actions">
+        <!-- <a href="index.html">Back to Landing</a> -->
+        <button id="refreshBtn">Refresh list</button>
+      </div>
+    </header>
+
+    <div id="error" class="error" style="display: none;"></div>
+    <div id="loading" class="loading">Loading applications...</div>
+
+    <div class="table-wrap" id="appTableWrap" style="display:none;">
+      <table id="appTable">
+        <thead>
+          <tr>
+            <!-- <th>ID</th> -->
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Source</th>
+            <th>Course</th>
+            <th>Career Stage</th>
+            <th>Commitment</th>
+            <th>Submitted At</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div id="empty" class="empty-state" style="display:none;">No applications found yet.</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://llwkglzivzqsmgvgpryr.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxsd2tnbHppdnpxc21ndmdwcnlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMzE5MTksImV4cCI6MjA5MDcwNzkxOX0.Obi-0sZrfZfWLJxo5hdxO_en7EzJe0eiG3QUlOOkQdU';
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const tableBody = document.querySelector('#appTable tbody');
+    const tableWrap = document.getElementById('appTableWrap');
+    const empty = document.getElementById('empty');
+    const loading = document.getElementById('loading');
+    const error = document.getElementById('error');
+    const refreshBtn = document.getElementById('refreshBtn');
+
+    async function loadApplications() {
+      tableBody.innerHTML = '';
+      tableWrap.style.display = 'none';
+      empty.style.display = 'none';
+      error.style.display = 'none';
+      loading.style.display = 'block';
+
+      try {
+        const { data, error: supError } = await supabaseClient
+          .from('applications')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (supError) throw supError;
+
+        loading.style.display = 'none';
+
+        if (!data || data.length === 0) {
+          empty.style.display = 'block';
+          return;
+        }
+
+        tableWrap.style.display = 'block';
+
+        data.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${item.full_name ?? '-'}</td>
+            <td>${item.email ?? '-'}</td>
+            <td>${item.phone ?? '-'}</td>
+            <td>${item.source ?? '-'}</td>
+            <td>${item.course_of_interest ?? '-'}</td>
+            <td>${item.career_stage ?? '-'}</td>
+            <td><span class="status">${item.commitment ?? '-'}</span></td>
+            <td>${item.created_at ? new Date(item.created_at).toLocaleString() : '-'}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (err) {
+        loading.style.display = 'none';
+        error.textContent = 'Unable to load applications. ' + (err.message || 'Please try again.');
+        error.style.display = 'block';
+      }
+    }
+
+    refreshBtn.addEventListener('click', loadApplications);
+    loadApplications();
+  </script>
+</body>
+</html>
