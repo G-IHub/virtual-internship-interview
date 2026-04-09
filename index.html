@@ -170,10 +170,14 @@
     const nextBtn = document.getElementById("nextBtn");
 
     let watchedTime = 0;
+     const unlockTime = 600; 
 
     video.addEventListener("timeupdate", () => {
       if (!video.seeking) {
         watchedTime = video.currentTime;
+      }
+      if (video.currentTime >= unlockTime) {
+        nextBtn.style.display = "inline-block";
       }
     });
 
@@ -181,10 +185,6 @@
       if (video.currentTime > watchedTime) {
         video.currentTime = watchedTime;
       }
-    });
-
-    video.addEventListener("ended", () => {
-      nextBtn.style.display = "inline-block";
     });
 
     nextBtn.addEventListener("click", () => {
