@@ -15,10 +15,15 @@
     body {
       font-family: Arial, sans-serif;
       background: #f8f9fb;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .video-section {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
     }
 
     .container {
@@ -63,22 +68,6 @@
       max-width: 600px;
     }
 
-    button {
-      padding: 16px 30px;
-      border: none;
-      background: #7E22CE;
-      color: white;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: clamp(14px, 1.2vw, 18px);
-      display: none;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #5b18a8;
-    }
-
     .right {
       flex: 1;
     }
@@ -100,10 +89,248 @@
       object-fit: cover;
     }
 
+    /* Form Section Styles */
+    .form-section {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease-out;
+    }
+
+    .form-section.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 1400px;
+      padding: 40px 60px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h3 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .error {
+      display: none;
+      background-color: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+      border: 1px solid #f5c6cb;
+    }
+
+    .error.show {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #999;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 35px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 15% auto;
+      padding: 40px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.3s ease-out;
+      position: relative;
+    }
+
+    .modal-icon {
+      font-size: 48px;
+      color: #28a745;
+      margin-bottom: 20px;
+    }
+
+    .modal h2 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    .modal p {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close:hover {
+      color: #333;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     @media (max-width: 768px) {
       body {
-        height: auto;
         padding: 20px 0;
+      }
+
+      .video-section {
+        min-height: auto;
       }
 
       .container {
@@ -129,8 +356,21 @@
         font-size: 15px;
       }
 
-      button {
-        width: 100%;
+      .video {
+        object-fit: contain;
+        
+      }
+
+      .form-container {
+        padding: 20px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      h3 {
+        font-size: 24px;
       }
     }
   </style>
@@ -138,46 +378,152 @@
 
 <body>
 
-  <div class="container">
+  <!-- Video Section -->
+  <div class="video-section">
+    <div class="container">
+      <div class="left">
+        <div class="badge">INTERNATIONAL INTERNSHIP INTERVIEW PROCESS</div>
 
-    <div class="left">
-      <div class="badge">INTERNATIONAL INTERNSHIP INTERVIEW PROCESS</div>
+        <div class="header">
+          Watch the <span>orientation video</span>
+          to continue your application
+        </div>
 
-      <div class="header">
-        Watch the <span>orientation video</span>
-        to continue your application
+        <p class="note">
+          Note: You are required to watch this video till the end to unlock the form.
+        </p>
       </div>
 
-      <p class="note">
-        Note: You are required to watch this video till the end to unlock the next step in the interview process.
-      </p>
-
-      <button id="nextBtn">Continue →</button>
-    </div>
-
-    <div class="right">
-      <div class="video-card">
-        <video id="video" controls>
-          <source src="assets/interview.mp4" type="video/mp4" />
-        </video>
+      <div class="right">
+        <div class="video-card">
+          <video id="video" controls>
+            <source src="assets/interview.mp4" type="video/mp4" />
+          </video>
+        </div>
       </div>
     </div>
-
   </div>
 
+  <!-- Form Section -->
+  <div class="form-section" id="formSection">
+    <div class="form-container">
+      <div class="form-header">
+        <h3>Internship Interview Form</h3>
+        <p class="subtitle">Join our research team</p>
+      </div>
+
+      <div class="error" id="errorMsg"></div>
+
+      <form id="form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fullName">Full Name (with initials) <span style="color: red;">*</span></label>
+            <input type="text" id="fullName" name="fullName" placeholder="e.g Mr, Dr, Prof." required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number (with country code) <span style="color: red;">*</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required />
+          </div>
+
+          <div class="form-group">
+            <label for="source">How did you find the internship? <span style="color: red;">*</span></label>
+            <select id="source" name="source" required>
+              <option value="">Select an option</option>
+              <option value="LinkedIn">LinkedIn</option>
+              <option value="Genomac WhatsApp Group">Genomac WhatsApp Group</option>
+              <option value="A Friend">A Friend</option>
+              <option value="A Mentor/Lecturer">A Mentor/Lecturer</option>
+              <option value="Genomac Email">Genomac Email</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="courseOfInterest">Course of Interest <span style="color: red;">*</span></label>
+            <select id="courseOfInterest" name="courseOfInterest" required>
+              <option value="">Select a course</option>
+              <option value="Cancer Genomics">Cancer Genomics</option>
+              <option value="Comparative Genomics">Comparative Genomics</option>
+              <option value="Infectious Diseases">Infectious Diseases</option>
+              <option value="Anticancer">Anticancer R and D</option>
+              <option value="Antibacteria">Antibacteria</option>
+              <option value="Epidermiology">Epidemiology and public health</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="careerStage">Current Career Stage <span style="color: red;">*</span></label>
+            <select id="careerStage" name="careerStage" required>
+              <option value="">Select your stage</option>
+              <option value="Undergraduate">Undergraduate</option>
+              <option value="Graduate">Graduate</option>
+              <option value="MSc">MSc</option>
+              <option value="PhD Student">PhD Student</option>
+              <option value="Lecturer">Lecturer</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="expectations">What are your expectations from the Research Internship? <span style="color: red;">*</span></label>
+          <textarea id="expectations" name="expectations"
+            placeholder="Tell us what you expect from this internship..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="research_motivation">Why did you select the Research Interest/Area you selected? <span style="color: red;">*</span></label>
+          <textarea id="research_motivation" name="research_motivation"
+            placeholder="Share your motivation for this research area..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="commitment">Do you agree to be committed to the Internship in terms of attending classes and completing project work?<span style="color: red;">*</span></label>
+          <select id="commitment" name="commitment" required>
+            <option value="">Select an option</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+
+        <button type="submit" id="submitBtn">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <div class="modal-icon">✓</div>
+      <h2>Application Submitted!</h2>
+      <p>Thank you for your application. We'll review it and get back to you soon.</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
   <script>
     const video = document.getElementById("video");
-    const nextBtn = document.getElementById("nextBtn");
+    const formSection = document.getElementById("formSection");
 
     let watchedTime = 0;
-     const unlockTime = 600; 
+    const unlockTime = 10; 
 
     video.addEventListener("timeupdate", () => {
       if (!video.seeking) {
         watchedTime = video.currentTime;
       }
       if (video.currentTime >= unlockTime) {
-        nextBtn.style.display = "inline-block";
+        formSection.classList.add("show");
       }
     });
 
@@ -185,10 +531,6 @@
       if (video.currentTime > watchedTime) {
         video.currentTime = watchedTime;
       }
-    });
-
-    nextBtn.addEventListener("click", () => {
-      window.location.href = "form.html";
     });
   </script>
 
